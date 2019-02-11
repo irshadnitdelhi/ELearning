@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous"> -->
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    
+    <style>
+        .options{
+            
+            position: fixed;
+            top: calc(50vh);
+            left: 0
+        }
+        label{
+            font-size:0.8rem;
+        }
+        .btn{
+            width: 60px;
+            height: 30px;
+            border-radius: 0;   
+        }
+        /* The snackbar - position it at the bottom and in the middle of the screen */
+        #snackbar {
+            visibility: hidden; /* Hidden by default. Visible on click */
+            min-width: 250px; /* Set a default minimum width */
+            margin-left: -125px; /* Divide value of min-width by 2 */
+            background-color: #333; /* Black background color */
+            color: #fff; /* White text color */
+            text-align: center; /* Centered text */
+            border-radius: 2px; /* Rounded borders */
+            padding: 16px; /* Padding */
+            position: fixed; /* Sit on top of the screen */
+            z-index: 1; /* Add a z-index if needed */
+            left: 50%; /* Center the snackbar */
+            bottom: 30px; /* 30px from the bottom */
+        }
+        
+        /* Show the snackbar when clicking on a button (class added with JavaScript) */
+        #snackbar.show {
+            visibility: visible; /* Show the snackbar */
+            /* Add animation: Take 0.5 seconds to fade in and out the snackbar. 
+            However, delay the fade out process for 2.5 seconds */
+            -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+            animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        }
+        
+        /* Animations to fade the snackbar in and out */
+        @-webkit-keyframes fadein {
+            from {bottom: 0; opacity: 0;} 
+            to {bottom: 30px; opacity: 1;}
+        }
+        
+        @keyframes fadein {
+            from {bottom: 0; opacity: 0;}
+            to {bottom: 30px; opacity: 1;}
+        }
+        
+        @-webkit-keyframes fadeout {
+            from {bottom: 30px; opacity: 1;} 
+            to {bottom: 0; opacity: 0;}
+        }
+        
+        @keyframes fadeout {
+            from {bottom: 30px; opacity: 1;}
+            to {bottom: 0; opacity: 0;}
+        }
+    </style>
+    <title>Hello, world!</title>
+</head>
+<body>
+    <div class="container">
+       <h1>Queues</h1>
+
+    </div>
+    
+    <div class="modal fade" id="textEntry" tabindex="-1" role="dialog" aria-labelledby="textEntryHeader" aria-hidden="true"> 
+        <div class="modal-dialog" role="document"> 
+            <div class="modal-content"> 
+                <div class="modal-header"> 
+                    <h5 class="modal-title" id="textEntryHeader">Text Entry</h5> 
+                </div> 
+                <div class="modal-body"> 
+                    
+                    <form>
+                        <div class="form-group">
+                            
+                        </div>
+                        <div class="form-group">
+                            <label for="text-input">Text Content</label>
+                            <input type="text" id="text-input-header" placeholder="Heading">
+                            <textarea class="form-control"name="text-input" id="text-input" placeholder="Text "></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="img-input">Image URL</label>
+                            <input class="form-control"name="img-input" id="img-input"></input>
+                        </div>
+                        <div class="form-group">
+                            <label for="video-input">Embed Link</label>
+                            <input class="form-control"name="video-input" id="video-input"></input>
+                        </div>
+                        <div class="form-group">
+                            <label for="ref-input">Reference </label>
+                            <input class="form-control"name="ref-input" id="ref-input"></input>
+                        </div>
+                        
+                    </form>
+                </div> 
+                <div class="modal-footer"> 
+                    <button type="button" class="btn btn-primary"  data-dismiss="modal" id="textbtn">Text</button> 
+                    
+                    <button type="button" class="btn btn-primary"  data-dismiss="modal" id="prebtn">Pre</button> 
+                    <button type="button" class="btn btn-primary"  data-dismiss="modal" id="imgbtn">Image</button> 
+                    <button type="button" class="btn btn-primary"  data-dismiss="modal" id="videobtn">Video</button> 
+                    <button type="button" class="btn btn-primary"  data-dismiss="modal" id="refbtn">Reference</button> 
+                    
+                    <script>
+                        $('#textbtn').on('click',function(){
+                            let text = $('#text-input').val() ;
+                            let heading = $('#text-input-header').val()
+                            $('#text-input').val('') ;
+                            
+                            
+                            let htmlTag = `<div class="element my-4"><h5>${heading}</h5><p>${text}</p></div>`
+                            $('.container').append(htmlTag)
+                            
+                        })
+                        $('#prebtn').on('click',function(){
+                            let text = $('#text-input').val() ;
+                            let heading = $('#text-input-header').val()
+                            $('#text-input').val('') ;
+                            
+                            
+                            let htmlTag = `<div class="element my-4"><h5>${heading}</h5><pre>${text}</pre></div>`
+                            $('.container').append(htmlTag)
+                            
+                        })
+                        
+                        $('#imgbtn').on('click',function(){
+                            
+                            let imgurl = $('#img-input').val() ;
+                            let htmlTag = `<div class="element my-4"><img src="${imgurl}"></div>`
+                            $('.container').append(htmlTag)
+                            
+                        })
+                        $('#videobtn').on('click',function(){
+                            let text = $('#video-input').val() ;
+                            let htmlTag = `<div class="element my-4">${embedLink}</div>`
+                            $('.container').append(htmlTag)
+                            
+                        })
+                        $('#refbtn').on('click',function(){
+                            let link = $('#ref-input').val() ;
+                            let htmlTag = `<div class="element my-4"> <a href="${link}></a> </div>`
+                            $('.container').append(htmlTag)
+                            
+                        })
+                        
+                        
+                    </script>
+                </div> 
+            </div> 
+        </div> 
+    </div>
+    <div class="modal fade" id="qandaEntry" tabindex="-1" role="dialog" aria-labelledby="qandaHeader" aria-hidden="true"> 
+        <div class="modal-dialog" role="document"> 
+            <div class="modal-content"> 
+                <div class="modal-header"> 
+                    <h5 class="modal-title" id="qandaHeader">Q & A Entry</h5> 
+                </div> 
+                <div class="modal-body"> 
+                    
+                    <form>
+                        
+                        <div class="form-group">
+                            <label for="question-input">Question</label>
+                            <textarea class="form-control" name="question-input" id="question-input" placeholder="Question "></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="answer-input">Answer</label>
+                            <textarea type="text" id="answer-input" placeholder="Answer" class="form-control"></textarea>
+                        </div>
+                        
+                        
+                    </form>
+                </div> 
+                <div class="modal-footer"> 
+                    <button type="button" class="btn btn-success"  data-dismiss="modal" id="qanda-btn">Add</button> 
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" ></button>
+                    
+                    <script>
+                        $('#qanda-btn').on('click',function(){
+                            let question = $('#question-input').val() ;
+                            let answer = $('#answer-input').val() ;
+                            let htmlTag = `<div class="element my-5">
+                                <div class="accordion" id="accordionExample"> 
+                                    <div class="card"> 
+                                        <div class="card-header"data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" id="headingOne">
+                                            <pre class="mb-0"> 
+                                                ${question}
+                                            </pre> 
+                                        </div> 
+                                        <div id="collapseOne" class="collapse " aria-labelledby="headingOne" data-parent="#accordionExample"> 
+                                            <pre class="card-body">
+                                                
+                                                ${answer}
+                                            </pre> 
+                                        </div> 
+                                    </div> 
+                                </div>
+                            </div>`
+                            $('.container').append(htmlTag)
+                            
+                        })
+                        
+                        
+                    </script>
+                </div> 
+            </div> 
+        </div> 
+    </div>
+    
+    
+    
+    <div class="options">
+        
+        <button type="button" data-toggle="modal" data-target="#textEntry"  class="btn btn-primary d-block my-3">Text</button>
+
+        
+        
+        <button type="button"  data-toggle="modal" data-target="#qandaEntry" class="btn btn-primary d-block my-3">Q&A</button>
+        
+        
+        
+    </div>
+    
+    <div id="snackbar">Copied</div>
+    <div class="save" style="position : fixed ; bottom : 0 ; right:0">
+        <textarea name="copy" id="copycontent" cols="30" rows="10" style="visibility: hidden  ;"></textarea>
+        <button class="btn btn-primary" id="save"><i class="fas fa-save"></i></button>
+    </span>
+</div>
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script>
+    function myFunction() {
+  // Get the snackbar DIV
+  var x = document.getElementById("snackbar");
+
+  // Add the "show" class to DIV
+  x.className = "show";
+
+  // After 3 seconds, remove the show class from DIV
+  setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+}
+$('#save').on('click',function(){
+
+    let abc = $('.container').html()
+    $('#copycontent').val(abc)
+    $('#copycontent').select() 
+    document.execCommand("copy")
+    myFunction();
+    
+
+
+
+
+})
+</script>
+</body>
+
+</html>

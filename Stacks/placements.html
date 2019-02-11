@@ -1,0 +1,111 @@
+<h1>Stacks - Placments</h1>
+<section>
+    <div>
+        <q>
+                Design a stack that supports push, pop, top, and retrieving the minimum element in constant time.
+
+                push(x) — Push element x onto stack.
+                pop() — Removes the element on top of the stack.
+                top() — Get the top element.
+                getMin() — Retrieve the minimum element in the stack.
+        </q>
+        <code>class MinStack {
+                class Node{
+                    int val;
+                    int min;
+                }
+                 
+                Stack<Node> st = new Stack<Node>();
+                 
+                public void push(int x) {
+                    Node node = new Node();
+                    node.val = x;
+                    if(st.isEmpty()){
+                        node.min=x;
+                    }else{
+                        Node top = st.peek();
+                        if(top.min < x){
+                            node.min=top.min;
+                        }else{
+                            node.min=x;
+                        }
+                    }
+                    st.push(node);
+                }
+             
+                public void pop() {
+                    st.pop();
+                }
+             
+                public int top() {
+                    return st.peek().val;
+                }
+             
+                public int getMin() {
+                    return st.peek().min;
+                }
+            }
+            </code>
+
+            
+    </div>
+    <div>
+        <q>
+            What is LIFO
+        </q>
+        <code>
+                LIFO is a short form of Last In First Out. It refers how data is accessed, stored and retrieved. Using this scheme, data that was stored last should be the one to be extracted first. This also means that in order to gain access to the first data, all the other data that was stored before this first data must first be retrieved and extracted.
+        </code>
+    </div>
+    <div>
+        <q>Differentiate STACK from ARRAY.</q>
+        <code>
+                Stack follows a LIFO pattern. It means that data access follows a sequence wherein the last data to be stored when the first one to be extracted. Arrays, on the other hand, does not follow a particular order and instead can be accessed by referring to the indexed element within the array.
+        </code>
+    </div>
+    <div>
+        <q>
+            Tower of Hanoi
+        </q>
+        <code>
+                #include < stdio.h > 
+  
+                        // C recursive function to solve tower of hanoi puzzle 
+                        void towerOfHanoi(int n, char from_rod, char to_rod, char aux_rod) 
+                        { 
+                            if (n == 1) 
+                            { 
+                                printf("\n Move disk 1 from rod %c to rod %c", from_rod, to_rod); 
+                                return; 
+                            } 
+                            towerOfHanoi(n-1, from_rod, aux_rod, to_rod); 
+                            printf("\n Move disk %d from rod %c to rod %c", n, from_rod, to_rod); 
+                            towerOfHanoi(n-1, aux_rod, to_rod, from_rod); 
+                        } 
+                          
+                        int main() 
+                        { 
+                            int n = 4; // Number of disks 
+                            towerOfHanoi(n, 'A', 'C', 'B');  // A, B and C are names of rods 
+                            return 0; 
+                        } 
+        </code>
+    </div>
+    <div>
+        <q>What are the applications of Stack</q>
+        <code>
+            1.Function Call
+            2.String Reversal
+            3.Parenthesis Checking
+            4.Backtracking
+            5.Syntax Parsing
+            6.Expression Conversion
+            7.Graph Traversal
+        </code>
+    </div>
+    
+</section>
+
+
+["Stacks (Placements)",{"q":"Design a stack that supports push, pop, top, and retrieving the minimum element in constant time.\n\n                push(x) — Push element x onto stack.\n                pop() — Removes the element on top of the stack.\n                top() — Get the top element.\n                getMin() — Retrieve the minimum element in the stack.","a":"class MinStack {\n                class Node{\n                    int val;\n                    int min;\n                }\n                 \n                Stack<Node> st = new Stack<Node>();\n                 \n                public void push(int x) {\n                    Node node = new Node();\n                    node.val = x;\n                    if(st.isEmpty()){\n                        node.min=x;\n                    }else{\n                        Node top = st.peek();\n                        if(top.min < x){\n                            node.min=top.min;\n                        }else{\n                            node.min=x;\n                        }\n                    }\n                    st.push(node);\n                }\n             \n                public void pop() {\n                    st.pop();\n                }\n             \n                public int top() {\n                    return st.peek().val;\n                }\n             \n                public int getMin() {\n                    return st.peek().min;\n                }\n            }"},{"q":"What is LIFO","a":" LIFO is a short form of Last In First Out. It refers how data is accessed, stored and retrieved. Using this scheme, data that was stored last should be the one to be extracted first. This also means that in order to gain access to the first data, all the other data that was stored before this first data must first be retrieved and extracted."},{"q":"Differentiate STACK from ARRAY","a":" Stack follows a LIFO pattern. It means that data access follows a sequence wherein the last data to be stored when the first one to be extracted. Arrays, on the other hand, does not follow a particular order and instead can be accessed by referring to the indexed element within the array."},{"q":"Solve the problem of Tower of Hanoi using stacks","a":"#include < stdio.h > \n  \n                        // C recursive function to solve tower of hanoi puzzle \n                        void towerOfHanoi(int n, char from_rod, char to_rod, char aux_rod) \n                        { \n                            if (n == 1) \n                            { \n                                printf(\"\\n Move disk 1 from rod %c to rod %c\", from_rod, to_rod); \n                                return; \n                            } \n                            towerOfHanoi(n-1, from_rod, aux_rod, to_rod); \n                            printf(\"\\n Move disk %d from rod %c to rod %c\", n, from_rod, to_rod); \n                            towerOfHanoi(n-1, aux_rod, to_rod, from_rod); \n                        } \n                          \n                        int main() \n                        { \n                            int n = 4; // Number of disks \n                            towerOfHanoi(n, 'A', 'C', 'B');  // A, B and C are names of rods \n                            return 0; \n                        } "},{"q":"What are the applications of Stack","a":"  1.Function Call\n            2.String Reversal\n            3.Parenthesis Checking\n            4.Backtracking\n            5.Syntax Parsing\n            6.Expression Conversion\n            7.Depth First Search (Graph Traversal)"}]
+    
