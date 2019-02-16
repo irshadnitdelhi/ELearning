@@ -158,7 +158,9 @@
                         })
                         $('#refbtn').on('click',function(){
                             let link = $('#ref-input').val() ;
-                            let htmlTag = `<div class="element my-4"> <a href="${link}></a> </div>`
+                            let heading = $('#text-input-header').val()
+                            console.log(link)
+                            let htmlTag = `<div class="element my-4"> <a href="${link}">${heading}</a> </div>`
                             $('.container').append(htmlTag)
                             
                         })
