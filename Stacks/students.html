@@ -1,7 +1,8 @@
 <h1>Stacks</h1>
 <section>
-    <div><h3>Introduction to Stacks</h3></div>
+    <div><h5>Stacks</h5></div>
     <div>
+        <h5>Introduction</h5>
         <p>
             Stack is an abstract data type with a bounded(predefined) capacity. It is a simple data structure that allows adding and removing elements in a particular order. Every time an element is added, it goes on the top of the stack and the only element that can be removed is the element that is at the top of the stack, just like a pile of objects.
         </p>
@@ -10,11 +11,9 @@
         <iframe width="956" height="538" src="https://www.youtube.com/embed/vZEuSFXSMDI?list=PLqM7alHXFySF7Lap-wi5qlaD8OEBx9RMV" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
     </div>
     <div>
-        <h3>
+        <h5>
             Basic Features of the Stack     
-        </h3>
-    </div>
-    <div>
+        </h5>
         <p>
             Stack is an ordered list of similar data type.
             Stack is a LIFO(Last in First out) structure or we can say FILO(First in Last out).
@@ -23,10 +22,10 @@
             
         </p>
     </div>
-    <div><h3>
-        Applications of Stack
-    </h3></div>
     <div>
+        <h5>
+            Applications of Stack
+        </h5>
         <p>
             The simplest application of a stack is to reverse a word. You push a given word to stack - letter by letter - and then pop letters from the stack.
             
@@ -37,9 +36,7 @@
         </p>
     </div>
     <div>
-        <h3>Push Operation Algorithm</h3>
-    </div>
-    <div>
+        <h5>Push Operation Algorithm</h5>
         <p>
             Check if the stack is full or not.
             If the stack is full, then print error of overflow and exit the program.
@@ -47,9 +44,8 @@
         </p>
     </div>
     <div>
-        <h3>Pop Operation Algorithm</h3>
-    </div>
-    <div>
+        <h5>Pop Operation Algorithm</h5>
+    
         <p>
             Check if the stack is empty or not.
             If the stack is empty, then print error of underflow and exit the program.
@@ -57,9 +53,74 @@
         </p>
     </div>
     <div>
-        <h3>Analysis of Stack Operations</h3>
+        <h5>Code</h5>
+        <pre>
+                // CPP Program to convert postfix to prefix 
+                #include <iostream> 
+                #include <stack> 
+                using namespace std; 
+                
+                // function to check if character is operator or not 
+                bool isOperator(char x) { 
+                switch (x) { 
+                case '+': 
+                case '-': 
+                case '/': 
+                case '*': 
+                    return true; 
+                } 
+                return false; 
+                } 
+                
+                // Convert postfix to Prefix expression 
+                string postToPre(string post_exp) { 
+                stack<string> s; 
+                
+                // length of expression 
+                int length = post_exp.size(); 
+                
+                // reading from right to left 
+                for (int i = 0; i < length; i++) { 
+                
+                    // check if symbol is operator 
+                    if (isOperator(post_exp[i])) { 
+                
+                    // pop two operands from stack 
+                    string op1 = s.top(); 
+                    s.pop(); 
+                    string op2 = s.top(); 
+                    s.pop(); 
+                
+                    // concat the operands and operator 
+                    string temp = post_exp[i] + op2 + op1; 
+                
+                    // Push string temp back to stack 
+                    s.push(temp); 
+                    } 
+                
+                    // if symbol is an operand 
+                    else { 
+                
+                    // push the operand to the stack 
+                    s.push(string(1, post_exp[i])); 
+                    } 
+                } 
+                
+                // stack[0] contains the Prefix expression 
+                return s.top(); 
+                } 
+                
+                // Driver Code 
+                int main() { 
+                string post_exp = "ABC/-AK/L-*"; 
+                cout << "Prefix : " << postToPre(post_exp); 
+                return 0; 
+                } 
+                
+        </pre>
     </div>
     <div>
+        <h5>Analysis of Stack Operations</h5>
         <p>
                 Below mentioned are the time complexities for various operations that can be performed on the Stack data structure.
 
