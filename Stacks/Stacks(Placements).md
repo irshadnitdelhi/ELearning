@@ -525,3 +525,374 @@
 >
 > 
 
+------
+
+#### How to implement k stacks using a single array
+
+*Question*
+
+> Create a data structure kStacks that represents k stacks. Implementation of kStacks should use only one array, i.e., k stacks should use the same array for storing elements. Following functions must be supported by kStacks.
+>
+> 1. push(int x, int sn) –> pushes x to stack number ‘sn’ where sn is from 0 to k-1
+> 2. pop(int sn) –> pops an element from stack number ‘sn’ where sn is from 0 to k-1​        
+
+*Answer*
+
+> **Method 1 (Divide the array in slots of size n/k)** 
+>  A simple way to implement k stacks is to divide the array in k slots of  size n/k each, and fix the slots for different stacks, i.e., use arr[0]  to arr[n/k-1] for first stack, and arr[n/k] to arr[2n/k-1] for stack2  where arr[] is the array to be used to implement two stacks and size of  array be n.
+>
+> The problem with this method is inefficient use of array space. A  stack push operation may result in stack overflow even if there is space  available in arr[]. For example, say the k is 2 and array size (n) is 6  and we push 3 elements to first and do not push anything to second  second stack. When we push 4th element to first, there will be overflow  even if we have space for 3 more elements in array.
+>
+> **Method 2 (A space efficient implementation)**
+> The idea is to use two extra arrays for efficient implementation of k  stacks in an array.  This may not make much sense for integer stacks,  but stack items can be large for example stacks of employees, students,  etc where every item is of hundreds of bytes.  For such large stacks,  the extra space used is comparatively very less as we use two *integer* arrays as extra space.
+>
+> Following are the two extra arrays are used:
+>  **1) top[]:**  This is of size k and stores indexes of top elements in all stacks.
+>  **2) next[]:** This is of size n and stores  indexes of next item for the items in array arr[].   Here arr[] is  actual array that stores k stacks.
+>  Together with k stacks, a stack of free slots in arr[] is also maintained. The top of this stack is stored in a variable ‘free’.
+>
+> All entries in top[] are initialized as -1 to indicate that all  stacks are empty.  All entries next[i] are initialized as i+1 because  all slots are free initially and pointing to next slot. Top of free  stack, ‘free’ is initialized as 0.
+>
+> ```c++
+> // A C++ program to demonstrate implementation of k stacks in a single 
+> // array in time and space efficient way 
+> #include<iostream> 
+> #include<climits> 
+> using namespace std; 
+> 
+> // A C++ class to represent k stacks in a single array of size n 
+> class kStacks 
+> { 
+> 	int *arr; // Array of size n to store actual content to be stored in stacks 
+> 	int *top; // Array of size k to store indexes of top elements of stacks 
+> 	int *next; // Array of size n to store next entry in all stacks 
+> 				// and free list 
+> 	int n, k; 
+> 	int free; // To store beginning index of free list 
+> public: 
+> 	//constructor to create k stacks in an array of size n 
+> 	kStacks(int k, int n); 
+> 
+> 	// A utility function to check if there is space available 
+> 	bool isFull() { return (free == -1); } 
+> 
+> 	// To push an item in stack number 'sn' where sn is from 0 to k-1 
+> 	void push(int item, int sn); 
+> 
+> 	// To pop an from stack number 'sn' where sn is from 0 to k-1 
+> 	int pop(int sn); 
+> 
+> 	// To check whether stack number 'sn' is empty or not 
+> 	bool isEmpty(int sn) { return (top[sn] == -1); } 
+> }; 
+> 
+> //constructor to create k stacks in an array of size n 
+> kStacks::kStacks(int k1, int n1) 
+> { 
+> 	// Initialize n and k, and allocate memory for all arrays 
+> 	k = k1, n = n1; 
+> 	arr = new int[n]; 
+> 	top = new int[k]; 
+> 	next = new int[n]; 
+> 
+> 	// Initialize all stacks as empty 
+> 	for (int i = 0; i < k; i++) 
+> 		top[i] = -1; 
+> 
+> 	// Initialize all spaces as free 
+> 	free = 0; 
+> 	for (int i=0; i<n-1; i++) 
+> 		next[i] = i+1; 
+> 	next[n-1] = -1; // -1 is used to indicate end of free list 
+> } 
+> 
+> // To push an item in stack number 'sn' where sn is from 0 to k-1 
+> void kStacks::push(int item, int sn) 
+> { 
+> 	// Overflow check 
+> 	if (isFull()) 
+> 	{ 
+> 		cout << "\nStack Overflow\n"; 
+> 		return; 
+> 	} 
+> 
+> 	int i = free;	 // Store index of first free slot 
+> 
+> 	// Update index of free slot to index of next slot in free list 
+> 	free = next[i]; 
+> 
+> 	// Update next of top and then top for stack number 'sn' 
+> 	next[i] = top[sn]; 
+> 	top[sn] = i; 
+> 
+> 	// Put the item in array 
+> 	arr[i] = item; 
+> } 
+> 
+> // To pop an from stack number 'sn' where sn is from 0 to k-1 
+> int kStacks::pop(int sn) 
+> { 
+> 	// Underflow check 
+> 	if (isEmpty(sn)) 
+> 	{ 
+> 		cout << "\nStack Underflow\n"; 
+> 		return INT_MAX; 
+> 	} 
+> 
+> 
+> 	// Find index of top item in stack number 'sn' 
+> 	int i = top[sn]; 
+> 
+> 	top[sn] = next[i]; // Change top to store next of previous top 
+> 
+> 	// Attach the previous top to the beginning of free list 
+> 	next[i] = free; 
+> 	free = i; 
+> 
+> 	// Return the previous top item 
+> 	return arr[i]; 
+> } 
+> 
+> /* Driver program to test twStacks class */
+> int main() 
+> { 
+> 	// Let us create 3 stacks in an array of size 10 
+> 	int k = 3, n = 10; 
+> 	kStacks ks(k, n); 
+> 
+> 	// Let us put some items in stack number 2 
+> 	ks.push(15, 2); 
+> 	ks.push(45, 2); 
+> 
+> 	// Let us put some items in stack number 1 
+> 	ks.push(17, 1); 
+> 	ks.push(49, 1); 
+> 	ks.push(39, 1); 
+> 
+> 	// Let us put some items in stack number 0 
+> 	ks.push(11, 0); 
+> 	ks.push(9, 0); 
+> 	ks.push(7, 0); 
+> 
+> 	cout << "Popped element from stack 2 is " << ks.pop(2) << endl; 
+> 	cout << "Popped element from stack 1 is " << ks.pop(1) << endl; 
+> 	cout << "Popped element from stack 0 is " << ks.pop(0) << endl; 
+> 
+> 	return 0; 
+> } 
+> 
+> ```
+
+------
+
+#### How to create a megeable stack ?
+
+*Question*
+
+>Design a stack with following operations.
+>
+>1.  push(Stack s, x):  Adds an item x to stack s
+>2. pop(Stack s): Removes the top item from stack s
+>3. merge(Stack s1, Stack s2): Merge contents of s2 into s1.
+>
+>Time Complexity of all above operations should be O(1). 
+
+*Answer*
+
+>If we **use array** implementation of stack, then merge is not possible to do in O(1) time as we have to do following steps.
+>
+>1. Delete old arrays
+>2. Create a new array for s1 with  size equal to size of old array for s1 plus size of s2.
+>3. Copy old contents of s1 and s2 to new array for s1
+>    The above operations take O(n) time.
+>
+>We can **use a linked list**  with two pointers, one pointer to first node (also used as top when  elements are added and removed from beginning). The other pointer is  needed for last node so that we can quickly link the linked list of s2  at the end of s1. Following are all operations.
+>
+>1.   push(): Adds the new item at the beginning of linked list using first pointer.
+>2.   pop():  Removes an item from beginning using first pointer.
+>3.   merge(): Links the first pointer second stack as next of last pointer of first list.
+>
+>*Can we do it if we are not allowed to use extra pointer?*
+> We can do it with [**circular linked list**](http://quiz.geeksforgeeks.org/circular-linked-list/).  The idea is to keep track of last node in linked list. The next of last node indicates top of stack.
+>
+>1.   push(): Adds the new item as next of last node.
+>
+>2.   pop(): Removes next of last node.
+>
+>3.   merge(): Links the top (next of last) of second list to the top (next  of last) of first list.  And  makes last of second list as last of whole  list.
+>
+>   
+
+------
+
+#### Design a Data Structure SpecialStack as described as given below 
+
+*Question*
+
+>1. push() 
+>2. pop()
+>3. isEmpty()
+>4. isFull()
+>5. getMin() : Tot get the minimum element from the stack
+>
+>All of these operations of SpecialStack must be O(1). Do not use any other data structures like arrays, Linked List etc ..
+
+*Answer*
+
+>Use two stacks: one to store actual stack elements and other as an auxiliary stack to store minimum values. The idea is to do push() and pop() operations in such a way that the top of auxiliary stack is always the minimum. Let us see how push() and pop() operations work.
+>
+>```
+>void Push(int x)
+>1. Push x to the first stack
+>2. Compare x with the to element of the second stack( auxilary stack)
+>   Let the top element be y , then
+>   a) If x is smaller than y, push x to the auxilary stack
+>   b) If x is greater than y, push y to the auxilary stack
+>```
+>
+>```
+>int Pop()
+>1. Pop the top element from the auxilary stack
+>2. Pop the top element from the actual stack and return it.
+>```
+>
+>```
+>int getMin()
+>1. Return the top element of auxilary stack
+>```
+>
+>#### Code
+>
+>````c++
+>#include<iostream> 
+>#include<stdlib.h> 
+>
+>using namespace std; 
+>
+>/* A simple stack class with basic stack funtionalities */
+>class Stack 
+>{ 
+>private: 
+>	static const int max = 100; 
+>	int arr[max]; 
+>	int top; 
+>public: 
+>	Stack() { top = -1; } 
+>	bool isEmpty(); 
+>	bool isFull(); 
+>	int pop(); 
+>	void push(int x); 
+>}; 
+>
+>/* Stack's member method to check if the stack is iempty */
+>bool Stack::isEmpty() 
+>{ 
+>	if(top == -1) 
+>		return true; 
+>	return false; 
+>} 
+>
+>/* Stack's member method to check if the stack is full */
+>bool Stack::isFull() 
+>{ 
+>	if(top == max - 1) 
+>		return true; 
+>	return false; 
+>} 
+>
+>/* Stack's member method to remove an element from it */
+>int Stack::pop() 
+>{ 
+>	if(isEmpty()) 
+>	{ 
+>		cout<<"Stack Underflow"; 
+>		abort(); 
+>	} 
+>	int x = arr[top]; 
+>	top--; 
+>	return x; 
+>} 
+>
+>/* Stack's member method to insert an element to it */
+>void Stack::push(int x) 
+>{ 
+>	if(isFull()) 
+>	{ 
+>		cout<<"Stack Overflow"; 
+>		abort(); 
+>	} 
+>	top++; 
+>	arr[top] = x; 
+>} 
+>
+>/* A class that supports all the stack operations and one additional 
+>operation getMin() that returns the minimum element from stack at 
+>any time. This class inherits from the stack class and uses an 
+>auxiliarry stack that holds minimum elements */
+>class SpecialStack: public Stack 
+>{ 
+>	Stack min; 
+>public: 
+>	int pop(); 
+>	void push(int x); 
+>	int getMin(); 
+>}; 
+>
+>/* SpecialStack's member method to insert an element to it. This method 
+>makes sure that the min stack is also updated with appropriate minimum 
+>values */
+>void SpecialStack::push(int x) 
+>{ 
+>	if(isEmpty()==true) 
+>	{ 
+>		Stack::push(x); 
+>		min.push(x); 
+>	} 
+>	else
+>	{ 
+>		Stack::push(x); 
+>		int y = min.pop(); 
+>		min.push(y); 
+>		if( x < y ) 
+>		min.push(x); 
+>		else
+>		min.push(y); 
+>	} 
+>} 
+>
+>/* SpecialStack's member method to remove an element from it. This method 
+>removes top element from min stack also. */
+>int SpecialStack::pop() 
+>{ 
+>	int x = Stack::pop(); 
+>	min.pop(); 
+>	return x; 
+>} 
+>
+>/* SpecialStack's member method to get minimum element from it. */
+>int SpecialStack::getMin() 
+>{ 
+>	int x = min.pop(); 
+>	min.push(x); 
+>	return x; 
+>} 
+>
+>/* Driver program to test SpecialStack methods */
+>int main() 
+>{ 
+>	SpecialStack s; 
+>	s.push(10); 
+>	s.push(20); 
+>	s.push(30); 
+>	cout<<s.getMin()<<endl; 
+>	s.push(5); 
+>	cout<<s.getMin(); 
+>	return 0; 
+>} 
+>
+>````
+>
+>
+
+------
+
